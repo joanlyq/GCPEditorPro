@@ -78,6 +78,14 @@ With these parameters:
 
 The classifiers folder is `src/assets/opencv/data/haarcascades`. GCPEditorPro supports the use of multiple classifiers applied sequentially. In order to add a new classifier, you need to add the new xml file to the classifiers folder and add the new classifier name to the `classifiers` array in the `src/app/gcps-detector.service.ts` file.
 
+## macOS issue
+
+There is a chance with older macOS you will need to remove the `package-lock.json` before compile the `npm install` command
+
+you might also need to use `npm install --legacy-peer-deps` to ignore the deprecated warning
+
+then export the environment variable `export NODE_OPTIONS=--openssl-legacy-provider`, then `ng serve`
+
 ## Contributing
 
 We welcome contributions to improve GCP Editor Pro. If you want to add something, please open a pull request. Please note that the copyright of any contribution will have to be gifted to UAV4GEO because of the [Fair Source License](https://github.com/uav4geo/GCPEditorPro/blob/master/LICENSE).
@@ -95,6 +103,7 @@ The Fair Source License is not an open-source license and doesn’t intend to be
 ### If I modify the source code, can I redistribute my modified version under the MIT License?
 
 No. Your modified version consists of the original software (which is under the Fair Source License) and your modifications, which together constitute a derivative work of the original software. The license does not grant you the right to redistribute under a license like MIT without the Use Limitation.
+
 
 
 
