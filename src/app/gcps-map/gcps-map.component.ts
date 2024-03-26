@@ -4,7 +4,8 @@ import { GCP } from '../gcps-utils.service';
 import { Router } from '@angular/router';
 import { icon, Map, marker } from 'leaflet';
 import * as L from 'leaflet';
-import * as proj4 from 'proj4';
+import * as proj4x from 'proj4';
+let proj4 = (proj4x as any).default;
 import Autolayers from './Leaflet.Autolayers/leaflet-autolayers';
 import SimpleMarkers from './Leaflet.SimpleMarkers/Control.SimpleMarkers';
 import Geocoder from './Leaflet.Geocoder/Control.Geocoder';
@@ -65,7 +66,7 @@ export class GcpsMapComponent implements OnInit {
                     shadowUrl: 'leaflet/marker-shadow.png'
                 })
             });
-            
+
             const imageIcon = `<svg role="img" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="images" class="svg-inline--fa fa-images fa-w-18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M480 416v16c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V176c0-26.51 21.49-48 48-48h16v208c0 44.112 35.888 80 80 80h336zm96-80V80c0-26.51-21.49-48-48-48H144c-26.51 0-48 21.49-48 48v256c0 26.51 21.49 48 48 48h384c26.51 0 48-21.49 48-48zM256 128c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-96 144l55.515-55.515c4.686-4.686 12.284-4.686 16.971 0L272 256l135.515-135.515c4.686-4.686 12.284-4.686 16.971 0L512 208v112H160v-48z"></path></svg>`;
             const trashIcon = `<svg role="img" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trash" class="svg-inline--fa fa-trash fa-w-14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z"></path></svg>`;
 
@@ -78,7 +79,7 @@ export class GcpsMapComponent implements OnInit {
                 <b>Elevation:</b>&nbsp;${elevation}<br/>
                 <a style="color: #fff;" class="btn btn-sm btn-primary mt-2" href="#/images-tagger/${encodeURIComponent(item.name)}">${imageIcon} Tag</a>`;
             domPopup.append(domText);
-            
+
             const deleteBtn = document.createElement("a");
             deleteBtn.style.color = "#fff";
             deleteBtn.className = "btn btn-sm btn-danger mt-2";
@@ -91,7 +92,7 @@ export class GcpsMapComponent implements OnInit {
             });
 
             domPopup.append(deleteBtn);
-            
+
             markerLayer.bindPopup(domPopup, {
                     offset: [0, -20]
                 });
@@ -123,7 +124,7 @@ export class GcpsMapComponent implements OnInit {
                         L.latLng(46.84267620076861, -91.9939864695641),
                     );
             }
-    
+
             this.map.fitBounds(bounds, {
                 maxZoom: 20,
                 animate: true
@@ -179,7 +180,7 @@ export class GcpsMapComponent implements OnInit {
 Example:
 https://a.tile.openstreetmap.org/{z}/{x}/{y}.png
 `, 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png');
-        
+
         if (url){
           customLayer.clearLayers();
           const l = L.tileLayer(url, {
@@ -193,7 +194,7 @@ https://a.tile.openstreetmap.org/{z}/{x}/{y}.png
         });
         basemaps["Custom"] = customLayer;
         basemaps["None"] = L.layerGroup();
-        
+
 
         new Autolayers({
             overlays: {},
@@ -232,7 +233,7 @@ https://a.tile.openstreetmap.org/{z}/{x}/{y}.png
         L.control.zoom({
             position: 'bottomleft'
         }).addTo(map);
-      
+
         this.markers = L.featureGroup().addTo(map);
 
         setTimeout(() => {
@@ -273,7 +274,7 @@ https://a.tile.openstreetmap.org/{z}/{x}/{y}.png
     ngOnDestroy(){
         if (this.onSmartImagesLayoutChanged) window.removeEventListener("smartImagesLayoutChanged", this.onSmartImagesLayoutChanged);
     }
-    
+
 
     next(): void {
         this.router.navigateByUrl('/export-config');

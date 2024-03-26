@@ -5,7 +5,8 @@ import { ImageGcp, GCP } from '../gcps-utils.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 
 import * as rfdc from 'rfdc';
-import * as proj4 from 'proj4';
+import * as proj4x from 'proj4';
+let proj4 = (proj4x as any).default;
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { GcpsDetectorService } from '../gcps-detector.service';
@@ -69,8 +70,8 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.filterDistance = localStorage.getItem("filterDistance") !== null ? 
-                                (parseFloat(localStorage.getItem("filterDistance")) || 30) : 
+        this.filterDistance = localStorage.getItem("filterDistance") !== null ?
+                                (parseFloat(localStorage.getItem("filterDistance")) || 30) :
                                 30;
     }
 
@@ -105,7 +106,7 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
             this.router.navigateByUrl('/');
             return;
         }
-    
+
         this.images = [];
 
         this.gcp = matches[0];
@@ -134,7 +135,7 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
             var coord = img.getCoords();
 
             if (res) {
-                
+
                 obj = {
                     image: {
                         gcpName: this.gcp.name,
@@ -216,7 +217,7 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
     public filterImages() {
 
         // console.log("Filtering images with " + this.filterDistance + "m distance");
-        
+
         this.page = 1;
 
         this.images = (this.filterByDistance) ? this.rawImages
@@ -250,7 +251,7 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
 
     private loadImages(i: number){
         if (!this.rawImages[i]) return;
-        
+
         const item = this.rawImages[i];
 
         this.setProgress("Loading " + item.image.imgName, i / this.rawImages.length);
@@ -285,7 +286,7 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
             if (res.length === 0) {
 
                 let coord = image.getCoords();
-                
+
                 const descr: ImageDescriptor = {
                     image: {
                         gcpName: this.gcp.name,
@@ -378,7 +379,7 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
         desc.isTagged = false;
         desc.image.imX = desc.image.imY = 0;
         desc.pinLocation = null;
-        
+
         const si = this.smartImages.find(si => si.src === desc.imageUrl);
         if (si) si.clearPin();
     }
@@ -399,7 +400,7 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
                 this.unpin(desc);
             }else{
                 const modalRef = this.modalService.open(ConfirmDialogComponent, { ariaLabelledBy: 'modal-basic-title' });
-    
+
                 modalRef.componentInstance.title = "Remove Image";
                 modalRef.componentInstance.text = "This image is associated with other GCPs. Do you want to remove it anyway?";
                 modalRef.result.then((result) => {
@@ -514,7 +515,7 @@ export class ImagesTaggerComponent implements OnInit, OnDestroy {
 
     private setProgress(text: string, progress: number = 0, close: boolean = false, allowClose: boolean = false) {
 
-        
+
         setTimeout(() => {
             this.allowProgressClose = allowClose;
             this.loadingProgress = progress;
